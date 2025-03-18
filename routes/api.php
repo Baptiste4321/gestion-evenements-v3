@@ -44,20 +44,20 @@ Route::post('/login', function (Request $request) {
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 
-// Routes d'authentification
+// routes d'authentifications /api/register /api/login /api/logout
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-// Routes des événements avec protection
+// routes protégées par sanctum
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('events', [EventController::class, 'store']);  // Créer un événement
-    Route::put('events/{id}', [EventController::class, 'update']);  // Mettre à jour un événement
-    Route::delete('events/{id}', [EventController::class, 'destroy']);  // Supprimer un événement
+    Route::post('events', [EventController::class, 'store']);  // pour créer un événement
+    Route::put('events/{id}', [EventController::class, 'update']);  // modifier un événement
+    Route::delete('events/{id}', [EventController::class, 'destroy']);  // supprimer un événement
 });
 
-// Routes publiques pour voir les événements
-Route::get('events', [EventController::class, 'index']);  // Liste des événements
-Route::get('events/{id}', [EventController::class, 'show']);  // Voir un événement spécifique
+// les routes publiques pour 
+Route::get('events', [EventController::class, 'index']);  // iiste des événements
+Route::get('events/{id}', [EventController::class, 'show']);
 
-Route::get('/events/{slug}/{id}', [EventController::class, 'show']);
+Route::get('/events/{slug}/{id}', [EventController::class, 'show']); // voir un événement spécifique
