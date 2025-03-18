@@ -64,19 +64,19 @@ class EventController extends Controller
         return response()->json($events);
     }
 
-    // Méthode pour récupérer un événement par son ID
+    // Methode pour récupérer un événement par son ID
     public function show($slug, $id)
     {
         $event = Event::where('id', $id)->where('slug', $slug)->firstOrFail();
         return response()->json($event);
     }
 
-    // Méthode pour mettre à jour un événement
+    // Maitode pour mettre à jour un événement avec methode put
     public function update(Request $request, $id)
     {
-        $event = Event::findOrFail($id);
+        $event = Event::findOrFail($id); //afficher ou retourner une erreur 404
 
-        $request->validate([
+        $request->validate([  // Validation des champs
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string',
@@ -85,7 +85,7 @@ class EventController extends Controller
             'max_participants' => 'required|integer',
         ]);
 
-        $event->update([
+        $event->update([ // Mise à jour des informations de l'événement avec methode put
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'description' => $request->description,
@@ -98,7 +98,7 @@ class EventController extends Controller
         return response()->json($event);
     }
 
-    // Méthode pour supprimer un événement
+    // supprimer un evénement
     public function destroy($id)
     {
         $event = Event::findOrFail($id);
