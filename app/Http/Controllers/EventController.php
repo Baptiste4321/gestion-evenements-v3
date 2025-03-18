@@ -8,10 +8,11 @@ use Illuminate\Support\Str;
 
 class EventController extends Controller
 {
-    // Méthode pour créer un événement
+    // creation d'un événement
     public function store(Request $request)
     {
         $request->validate([
+            // Validation des champs
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string',
@@ -20,6 +21,7 @@ class EventController extends Controller
             'max_participants' => 'required|integer',
         ]);
 
+        // Création des info d un match
         $event = Event::create([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
@@ -33,28 +35,30 @@ class EventController extends Controller
         return response()->json($event, 201); // Retourne l'événement créé avec le code 201
     }
 
-    // Méthode pour récupérer tous les événements
+    // Méthode pour récupérer tous les événements http://127.0.0.1:8000/api/events/
+    //on met un ? au debut et puis des &
     // Afficher tous les événements avec des filtres
     public function index(Request $request)
     {
         $query = Event::query();
 
-        // Filtrer par catégorie si le paramètre "category" est passé
+        // Filtrer par catégorie /?category=sport
         if ($request->has('category')) {
             $query->where('category', $request->category);
         }
 
-        // Filtrer par lieu si le paramètre "location" est passé
+        // Filtrer par lieu  /?location=ville
         if ($request->has('location')) {
             $query->where('location', 'like', '%' . $request->location . '%');
         }
 
-        // Filtrer par date si le paramètre "date" est passé
+        // Filtrer par date /?date=2022-03-10
         if ($request->has('date')) {
             $query->whereDate('date', $request->date);
         }
 
         // Exécuter la requête et retourner les résultats
+        //on retourne 5 resultat par page /?page=1
         $events = $query->paginate(5);
 
         return response()->json($events);
