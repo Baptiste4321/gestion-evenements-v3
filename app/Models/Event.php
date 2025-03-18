@@ -10,7 +10,7 @@ class Event extends Model
 {
     use HasFactory;
 
-    // Définir les champs autorisés pour l'assignation de masse
+   // pour éviter les bugs, ici sont les champs où on peut inscrire beaucoup de données dedans
     protected $fillable = [
         'title',
         'slug',
@@ -21,7 +21,7 @@ class Event extends Model
         'max_participants',
     ];
 
-    // Générer automatiquement le slug lors de la création
+    // Permet de générer automatiquement le slug lors de la création
     protected static function boot()
     {
         parent::boot();
