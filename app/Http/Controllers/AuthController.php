@@ -10,9 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // Inscription de l'utilisateur
+    // on enrégistre un utilisateur
     public function register(Request $request)
     {
+        // Validation des donnee avant l'enregistrement sinon error 400
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -47,7 +48,7 @@ class AuthController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             /** @var \App\Models\MyUserModel $user **/
             $user = Auth::user();
-            $token = $user->createToken('YourAppName')->plainTextToken;
+            $token = $user->createToken('YourAppName')->plainTextToken; //creation du token pour l'utilisateur a sa connexion
 
             return response()->json([
                 'message' => 'Vous etes connecté',
